@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Under Development</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'DM Serif Text', Georgia, serif;
+      color: #222222;
+      background: radial-gradient(120% 160% at 15% 15%, #ffd0f9 0%, #ffe7e3 32%, #f0f5ff 70%, #f9fff8 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: -40% -35% 25% -35%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    body::before {
+      background: radial-gradient(34% 44% at 12% 18%, rgba(255, 51, 138, 0.9) 0%, rgba(255, 51, 138, 0) 75%), radial-gradient(42% 48% at 82% 20%, rgba(64, 123, 255, 0.85) 0%, rgba(64, 123, 255, 0) 75%), radial-gradient(58% 55% at 48% 82%, rgba(255, 197, 84, 0.9) 0%, rgba(255, 197, 84, 0) 80%);
+      filter: blur(0.45rem);
+      opacity: 0.95;
+      animation: driftPrimary 14s cubic-bezier(0.66, 0.0, 0.34, 1) infinite alternate;
+    }
+
+    body::after {
+      background: radial-gradient(45% 60% at 22% 70%, rgba(64, 255, 223, 0.85) 0%, rgba(64, 255, 223, 0) 75%), radial-gradient(50% 60% at 78% 68%, rgba(255, 112, 173, 0.85) 0%, rgba(255, 112, 173, 0) 78%), radial-gradient(70% 70% at 50% 45%, rgba(123, 81, 255, 0.55) 0%, rgba(123, 81, 255, 0) 85%);
+      filter: blur(1.1rem);
+      opacity: 0.9;
+      animation: driftSecondary 18s ease-in-out infinite;
+    }
+
+    @keyframes driftPrimary {
+      0% {
+        transform: translate3d(-8%, -6%, 0) scale(1.1) rotate(0.5deg);
+      }
+      50% {
+        transform: translate3d(6%, 4%, 0) scale(1.16) rotate(-1deg);
+      }
+      100% {
+        transform: translate3d(-5%, 7%, 0) scale(1.08) rotate(1deg);
+      }
+    }
+
+    @keyframes driftSecondary {
+      0% {
+        transform: translate3d(6%, 4%, 0) scale(1.05) rotate(-1deg);
+        opacity: 0.85;
+      }
+      45% {
+        transform: translate3d(-4%, -6%, 0) scale(1.12) rotate(2deg);
+        opacity: 0.95;
+      }
+      100% {
+        transform: translate3d(2%, 3%, 0) scale(1.06) rotate(-2deg);
+        opacity: 0.8;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body::before,
+      body::after {
+        animation: none;
+      }
+    }
+
+    main {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      gap: 1.5rem;
+    }
+
+    img {
+      width: min(40vw, 240px);
+      max-width: 100%;
+      height: auto;
+    }
+
+    p {
+      max-width: 28rem;
+      margin: 0;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <img src="assets/Dwd.svg" alt="DWD logo">
+    <p>This page is under development.<br>Please check back later.</p>
+  </main>
+</body>
+</html>
