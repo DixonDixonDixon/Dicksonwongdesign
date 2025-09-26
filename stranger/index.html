@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dickson · Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=SUSE:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --header-height: 108px;
+      --footer-height: 68px;
+      --text-dark: #000000;
+      --text-muted: #000000;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #000;
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-family: 'SUSE', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 600;
+      color: #000000;
+    }
+
+    header,
+    footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      z-index: 15;
+      display: flex;
+      align-items: center;
+      padding: 0 2.25rem;
+      background: #ffffff;
+      color: var(--text-dark);
+      box-shadow: 0 18px 35px rgba(15, 23, 42, 0.14);
+      transition: transform 3s ease;
+      will-change: transform;
+    }
+
+    header {
+      top: 0;
+      height: var(--header-height);
+      justify-content: space-between;
+      transform: translateY(-120%);
+    }
+
+    footer {
+      bottom: 0;
+      height: var(--footer-height);
+      justify-content: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      transform: translateY(120%);
+    }
+
+    body.page-ready header,
+    body.page-ready footer {
+      transform: translateY(0);
+    }
+
+    header > *,
+    footer > * {
+      opacity: 0;
+      transition: opacity 0.6s ease 3s;
+      will-change: opacity;
+    }
+
+    body.page-ready header > *,
+    body.page-ready footer > * {
+      opacity: 1;
+    }
+
+    .brand-logo {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .brand-copy {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 1.425rem;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .brand-line {
+      letter-spacing: 0.18em;
+    }
+
+    .brand-sub {
+      font-size: 0.8rem;
+      letter-spacing: 0.24em;
+      opacity: 0.75;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+      margin-left: auto;
+    }
+
+    nav a {
+      color: #000000;
+      text-decoration: none;
+      transition: color 0.25s ease;
+    }
+
+    nav a:hover,
+    nav a:focus {
+      color: #000000;
+    }
+
+    main {
+      padding: 0;
+    }
+
+    section {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .parallax {
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 100%;
+    }
+
+    .hero {
+      background-image: url('../assets/Tres1.png');
+    }
+
+    .project {
+      background-image: url('../assets/Tres2.png');
+    }
+
+    .contact {
+      background-image: url('../assets/Tres3.png');
+    }
+
+    @media (max-width: 768px) {
+      .parallax {
+        background-attachment: scroll;
+      }
+
+      .brand-logo {
+        display: none;
+      }
+
+      .brand-copy {
+        position: static;
+        transform: none;
+        text-align: left;
+        align-items: flex-start;
+        margin-right: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="../assets/Dwd2.svg" class="brand-logo" alt="DWD logo">
+    <span class="brand-copy"><span class="brand-line">Dickson Wong Design</span><span class="brand-sub">for Stranger and Stranger</span></span>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero parallax" id="about"></section>
+    <section class="project parallax"></section>
+    <section class="contact parallax" id="contact"></section>
+  </main>
+  <footer>
+    <span class="footer-copy">© <span id="year"></span> Dickson</span>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    (function triggerHeaderFooterReveal() {
+      const heroImageSrc = '../assets/Tres1.png';
+      const reveal = () => document.body.classList.add('page-ready');
+      const img = new Image();
+      img.addEventListener('load', reveal, { once: true });
+      img.addEventListener('error', reveal, { once: true });
+      img.src = heroImageSrc;
+      if (img.complete) {
+        reveal();
+      }
+    })();
+
+    
+  </script>
+</body>
+</html>
