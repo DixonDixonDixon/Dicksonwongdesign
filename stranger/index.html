@@ -298,8 +298,14 @@
       transition: opacity 0.6s ease 3s;
     }
 
-    .footer-email {
+    .footer-actions {
       margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .footer-link {
       color: #000000;
       text-decoration: none;
       border: 1px solid rgba(0, 0, 0, 0.2);
@@ -312,15 +318,15 @@
       opacity: 0;
     }
 
-    .footer-email:hover,
-    .footer-email:focus-visible {
+    .footer-link:hover,
+    .footer-link:focus-visible {
       color: #ffffff;
       background: #000000;
       border-color: #000000;
       outline: none;
     }
 
-    body.page-ready .footer-email {
+    body.page-ready .footer-link {
       opacity: 1;
     }
 
@@ -476,7 +482,10 @@
   </main>
   <footer>
     <span class="footer-copy">© 2005 Dickson Wong Design. All rights reserved.</span>
-    <a class="footer-email" href="mailto:hello@dicksonwongdesign.com">Email me</a>
+    <div class="footer-actions">
+      <a class="footer-link" href="mailto:hello@dicksonwongdesign.com">Email me</a>
+      <a class="footer-link" href="https://dicksonwongdesign.com/cv/" target="_blank" rel="noopener">CV</a>
+    </div>
   </footer>
 
   <script>
@@ -634,4 +643,4 @@
 
   </script>
 </body>
-</html> 
+</html>
