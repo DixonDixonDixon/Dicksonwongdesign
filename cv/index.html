@@ -1,650 +1,328 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dickson · Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dickson Wong — CV</title>
+  <meta name="description" content="Brand and packaging designer based in London. Portfolio experience, notable work, and contact links for Dickson Wong.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=SUSE:wght@600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript>
-    <link href="https://fonts.googleapis.com/css2?family=SUSE:wght@600&display=swap" rel="stylesheet">
-  </noscript>
-  <style>
-    :root {
-      --header-height: 108px;
-      --footer-height: 68px;
-      --text-dark: #000000;
-      --text-muted: #000000;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      background: #000;
-      min-height: 100vh;
-      overflow-x: hidden;
-      font-family: 'SUSE', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      font-weight: 600;
-      color: #000000;
-      scrollbar-width: none;
-    }
-
-    body::-webkit-scrollbar {
-      display: none;
-    }
-
-    header,
-    footer {
-      position: fixed;
-      left: 0;
-      right: 0;
-      z-index: 15;
-      display: flex;
-      align-items: center;
-      padding: 0 2.25rem;
-      background: #ffffff;
-      color: var(--text-dark);
-      box-shadow: 0 18px 35px rgba(15, 23, 42, 0.14);
-      transition: transform 3s ease;
-    }
-
-    header {
-      top: 0;
-      height: var(--header-height);
-      justify-content: space-between;
-      transform: translateY(-120%);
-    }
-
-    footer {
-      bottom: 0;
-      height: var(--footer-height);
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      transform: translateY(120%);
-      gap: 1.5rem;
-    }
-
-    body.page-ready header,
-    body.page-ready footer {
-      transform: translateY(0);
-    }
-
-    header > *,
-    footer > * {
-      opacity: 0;
-      transition: opacity 0.6s ease 3s;
-      will-change: opacity;
-    }
-
-    body.page-ready header > *,
-    body.page-ready footer > * {
-      opacity: 1;
-    }
-
-    .brand-logo {
-      width: 64px;
-      height: 64px;
-      object-fit: contain;
-      flex-shrink: 0;
-    }
-
-    .brand-copy {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      line-height: 1.1;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      font-size: 1.425rem;
-      text-align: center;
-      pointer-events: none;
-    }
-
-    .brand-line {
-      letter-spacing: 0.18em;
-    }
-
-    .brand-sub {
-      font-size: 0.8rem;
-      letter-spacing: 0.24em;
-      opacity: 0.75;
-    }
-
-    .nav-toggle {
-      position: relative;
-      width: 48px;
-      height: 48px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: auto;
-      border: 0;
-      background: transparent;
-      cursor: pointer;
-      transition: opacity 0.6s ease 3s, transform 0.25s ease;
-    }
-
-    .nav-toggle:hover,
-    .nav-toggle:focus-visible {
-      outline: none;
-      transform: scale(1.05);
-    }
-
-    .nav-toggle-lines,
-    .nav-toggle-lines::before,
-    .nav-toggle-lines::after {
-      display: block;
-      width: 22px;
-      height: 2px;
-      background: #000000;
-      border-radius: 999px;
-      transition: transform 0.35s ease, opacity 0.35s ease, background 0.35s ease;
-    }
-
-    .nav-toggle-lines {
-      position: relative;
-    }
-
-    .nav-toggle-lines::before,
-    .nav-toggle-lines::after {
-      content: '';
-      position: absolute;
-      left: 0;
-    }
-
-    .nav-toggle-lines::before {
-      top: -6px;
-    }
-
-    .nav-toggle-lines::after {
-      top: 6px;
-    }
-
-    body.nav-open .nav-toggle-lines {
-      background: transparent;
-    }
-
-    body.nav-open .nav-toggle-lines::before {
-      transform: translateY(6px) rotate(45deg);
-    }
-
-    body.nav-open .nav-toggle-lines::after {
-      transform: translateY(-6px) rotate(-45deg);
-    }
-
-    .nav-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.35);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-      z-index: 12;
-    }
-
-    body.nav-open .nav-overlay {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .project-drawer {
-      position: fixed;
-      top: calc(var(--header-height) + 1.5rem);
-      right: 1.75rem;
-      width: clamp(240px, 28vw, 320px);
-      max-height: calc(100vh - var(--header-height) - 3rem);
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      padding: 1.75rem 1.65rem;
-      border-radius: 18px;
-      background: rgba(14, 14, 18, 0.96);
-      backdrop-filter: blur(14px);
-      box-shadow: 0 32px 48px rgba(0, 0, 0, 0.32);
-      transform: translateY(-8px) scale(0.98);
-      opacity: 0;
-      pointer-events: none;
-      transition: transform 0.4s cubic-bezier(0.25, 0.85, 0.35, 1), opacity 0.28s ease;
-      z-index: 22;
-    }
-
-    body.nav-open .project-drawer {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      pointer-events: auto;
-    }
-
-    .drawer-nav {
-      display: grid;
-      gap: 1.35rem;
-      text-align: right;
-    }
-
-    .drawer-nav a {
-      color: rgba(255, 255, 255, 0.85);
-      text-decoration: none;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      font-size: 1.275rem;
-      transition: color 0.2s ease;
-    }
-
-    .drawer-nav a:hover,
-    .drawer-nav a:focus-visible {
-      color: #ffffff;
-      outline: none;
-    }
-
-    .project-dots {
-      position: fixed;
-      top: 50%;
-      right: 2.5rem;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      z-index: 10;
-    }
-
-    .project-dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      border: 2px solid rgba(255, 255, 255, 0.65);
-      background: transparent;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
-    }
-
-    .project-dot::after {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.4);
-      transition: opacity 0.3s ease;
-    }
-
-    .project-dot[aria-current="true"],
-    .project-dot:focus-visible {
-      transform: scale(1.25);
-      border-color: #ffffff;
-      background: rgba(255, 255, 255, 0.18);
-    }
-
-    .project-dot[aria-current="true"]::after {
-      opacity: 1;
-      background: #ffffff;
-    }
-
-    .project-dot:focus-visible {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35);
-    }
-
-    .footer-copy {
-      color: #000000;
-      transition: opacity 0.6s ease 3s;
-    }
-
-    .footer-actions {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .footer-link {
-      color: #000000;
-      text-decoration: none;
-      border: 1px solid rgba(0, 0, 0, 0.2);
-      padding: 0.45rem 0.9rem;
-      border-radius: 999px;
-      transition: opacity 0.6s ease 3s, color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-size: 0.85rem;
-      opacity: 0;
-    }
-
-    .footer-link:hover,
-    .footer-link:focus-visible {
-      color: #ffffff;
-      background: #000000;
-      border-color: #000000;
-      outline: none;
-    }
-
-    body.page-ready .footer-link {
-      opacity: 1;
-    }
-
-    main {
-      padding: 0;
-    }
-
-    section {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-    }
-
-    .parallax {
-      position: relative;
-      overflow: hidden;
-      background: #000;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center calc(50% + var(--parallax-offset, 0%));
-    }
-
-    .peteshead-1 {
-      background-image: url('../assets/peteshead1.png');
-    }
-
-    .peteshead-2 {
-      background-image: url('../assets/peteshead2.png');
-    }
-
-    .peteshead-3 {
-      background-image: url('../assets/peteshead3.png');
-    }
-
-    .peteshead-4 {
-      background-image: url('../assets/peteshead4.png');
-    }
-
-    .tres-1 {
-      background-image: url('../assets/Tres1.png');
-    }
-
-    .tres-2 {
-      background-image: url('../assets/Tres2.png');
-    }
-
-    .tres-3 {
-      background-image: url('../assets/Tres3.png');
-    }
-
-    .tres-4 {
-      background-image: url('../assets/Tres4.png');
-    }
-
-    .tres-5 {
-      background-image: url('../assets/Tres5.png');
-    }
-
-    .opalina-1 {
-      background-image: url('../assets/Opalina1.png');
-    }
-
-    .opalina-2 {
-      background-image: url('../assets/Opalina2.png');
-    }
-
-    .opalina-3 {
-      background-image: url('../assets/Opalina3.png');
-    }
-
-    .opalina-4 {
-      background-image: url('../assets/Opalina4.png');
-    }
-
-    @media (max-width: 768px) {
-      .nav-toggle {
-        width: 44px;
-        height: 44px;
-        border-radius: 10px;
-      }
-
-      .project-drawer {
-        right: 50%;
-        transform: translate(50%, -8px) scale(0.98);
-        width: min(92vw, 360px);
-        top: calc(var(--header-height) + 1rem);
-        max-height: calc(100vh - var(--header-height) - 2rem);
-      }
-
-      body.nav-open .project-drawer {
-        transform: translate(50%, 0) scale(1);
-      }
-
-      .project-dots {
-        display: none;
-      }
-
-      .brand-logo {
-        display: none;
-      }
-
-      .brand-copy {
-        position: static;
-        transform: none;
-        text-align: left;
-        align-items: flex-start;
-        margin-right: auto;
-        font-size: 1.1rem;
-      }
-
-      .brand-sub {
-        font-size: 0.62rem;
-      }
-
-      .footer-copy {
-        display: none;
-      }
-
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Work Sans', 'Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
 </head>
-<body>
-  <header>
-    <img src="../assets/Dwd2.svg" class="brand-logo" alt="DWD logo">
-    <span class="brand-copy"><span class="brand-line">Dickson Wong Design</span><span class="brand-sub">for Stranger and Stranger</span></span>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="project-drawer" aria-label="Open project menu">
-      <span class="nav-toggle-lines" aria-hidden="true"></span>
-    </button>
-  </header>
-  <div class="nav-overlay" hidden></div>
-  <aside class="project-drawer" id="project-drawer" aria-hidden="true">
-    <nav class="drawer-nav">
-      <a href="#peteshead" data-drawer-link="peteshead">Petes Head</a>
-      <a href="#tres" data-drawer-link="tres">Tres</a>
-      <a href="#opalina" data-drawer-link="opalina">Opalina</a>
-    </nav>
-  </aside>
-  <aside class="project-dots" aria-label="Project navigation">
-    <a class="project-dot" href="#peteshead" data-project="peteshead" aria-label="View Petes Head project" aria-current="true"></a>
-    <a class="project-dot" href="#tres" data-project="tres" aria-label="View Tres project"></a>
-    <a class="project-dot" href="#opalina" data-project="opalina" aria-label="View Opalina project"></a>
-  </aside>
-  <main>
-    <section class="parallax peteshead-1" id="peteshead" data-project="peteshead"></section>
-    <section class="parallax peteshead-2" data-project="peteshead"></section>
-    <section class="parallax peteshead-3" data-project="peteshead"></section>
-    <section class="parallax peteshead-4" data-project="peteshead"></section>
-    <section class="parallax tres-1" id="tres" data-project="tres"></section>
-    <section class="parallax tres-2" data-project="tres"></section>
-    <section class="parallax tres-3" data-project="tres"></section>
-    <section class="parallax tres-4" data-project="tres"></section>
-    <section class="parallax tres-5" data-project="tres"></section>
-    <section class="parallax opalina-1" id="opalina" data-project="opalina"></section>
-    <section class="parallax opalina-2" data-project="opalina"></section>
-    <section class="parallax opalina-3" data-project="opalina"></section>
-    <section class="parallax opalina-4" data-project="opalina"></section>
-  </main>
-  <footer>
-    <span class="footer-copy">© 2025 Dickson Wong Design. All rights reserved.</span>
-    <div class="footer-actions">
-      <a class="footer-link" href="mailto:hello@dicksonwongdesign.com">Email me</a>
-      <a class="footer-link" href="https://dicksonwongdesign.com/cv/" target="_blank" rel="noopener">CV</a>
-    </div>
-  </footer>
+<body class="font-sans bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
+  <div class="min-h-screen">
+    <header class="border-b border-neutral-200/70 dark:border-neutral-800">
+      <div class="mx-auto max-w-6xl px-4 md:px-8 py-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div class="flex items-center gap-3">
+          <span class="inline-flex h-16 w-16 items-center justify-center">
+            <img src="../assets/Dwd.svg" alt="Dickson Wong Design monogram" class="h-full w-full object-contain dark:hidden">
+            <img src="../assets/Dwd3.svg" alt="Dickson Wong Design monogram" class="hidden h-full w-full object-contain dark:block">
+          </span>
+          <h1 class="text-3xl font-bold tracking-tight">Dickson Wong</h1>
+        </div>
+        <div class="flex items-center gap-3">
+          <a href="../assets/Dickson_Wong_CV.pdf" download class="rounded-full border border-neutral-300/70 dark:border-neutral-700 px-4 py-2 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800">Download PDF</a>
+          <button type="button" data-theme-toggle class="rounded-full border border-neutral-300/70 dark:border-neutral-700 px-4 py-2 text-sm">Dark</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-6xl px-4 md:px-8 py-12 space-y-16">
+      <section aria-labelledby="about-heading" class="space-y-8">
+        <div class="space-y-6">
+          <div class="space-y-4 text-base leading-relaxed text-neutral-700 dark:text-neutral-300 max-w-2xl md:max-w-2xl">
+            <h2 id="about-heading" class="text-lg font-semibold uppercase tracking-[0.3em] text-neutral-500">Profile</h2>
+            <p>Born in Hong Kong, educated in Toronto, and now shaping brands in London, I bring a global perspective to branding and design. With a decade of experience, I've helped leading consumer brands create impactful, award-winning work.</p>
+            <p>Passionate about storytelling and visual identity, I focus on blending creativity with commercial success. Always eager to collaborate and innovate.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-12">
+        <div class="space-y-10 lg:grid lg:grid-cols-[minmax(22rem,2.5fr)_minmax(12rem,1fr)] lg:items-start lg:gap-12 lg:space-y-0">
+          <div class="space-y-10">
+            <section aria-labelledby="experience-heading" class="space-y-8">
+              <h2 id="experience-heading" class="text-lg font-semibold uppercase tracking-[0.3em] text-neutral-500 border-t border-neutral-200/70 pt-6 dark:border-neutral-800">Experience</h2>
+              <div class="space-y-10">
+                <article class="space-y-5 border-t border-neutral-200/70 pt-6 first:border-t-0 first:pt-0 dark:border-neutral-800">
+                  <header class="space-y-3">
+                    <h3 class="text-2xl font-semibold">Marks <span class="text-neutral-500 dark:text-neutral-400 text-lg align-middle">(London)</span></h3>
+                    <div class="space-y-2">
+                      <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                        <p class="text-sm uppercase tracking-[0.2em] text-neutral-500">Design Director</p>
+                        <p class="text-sm text-neutral-600 dark:text-neutral-400">Aug 2023 – Apr 2025</p>
+                      </div>
+                      <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                        <p class="text-sm uppercase tracking-[0.2em] text-neutral-500">Senior Designer</p>
+                        <p class="text-sm text-neutral-600 dark:text-neutral-400">Sept 2021 – Aug 2023</p>
+                      </div>
+                    </div>
+                  </header>
+                  <p class="text-sm leading-relaxed text-neutral-700 dark:text-neutral-300 max-w-[95%]">
+                    As Design Director at Marks London, I set the creative direction and partnered closely with the strategy team — shaping brand narratives and building clear creative territories that opened new ways to tell brand stories. I led a small, hands-on team, translating ideas into precise visual cues that help clients express their brand and product philosophy with clarity.
+                  </p>
+                  <p class="text-sm leading-relaxed text-neutral-700 dark:text-neutral-300 max-w-[95%]">
+                    Over three and a half years at Marks, I focused mainly on the Haleon account, contributing to a broad spectrum of work that strengthened the brand's presence and reinforced its leadership in medicinal personal care. A highlight was leading the Clinical White project, which won Best in Class at the 2025 PAC Awards. I also co-led the Platinum EX range for Japan, a flagship 2024 launch that landed strongly in market.
+                  </p>
+                  <section class="space-y-3">
+                    <h4 class="text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Notable Projects</h4>
+                    <ul class="space-y-1 text-sm text-neutral-700 dark:text-neutral-300">
+                      <li>Sensodyne Clinical tier — concept and brand development, pack design, rollout</li>
+                      <li>Sensodyne Japan – Platinum EX range — concept and pack design, variant rollout</li>
+                      <li>Parodontax China redesign — concept and pack design, illustration direction, rollout</li>
+                    </ul>
+                  </section>
+                </article>
+
+                <article class="space-y-5 border-t border-neutral-200/70 pt-6 dark:border-neutral-800">
+                  <header class="space-y-2">
+                    <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                      <h3 class="text-xl font-semibold">FutureBrand <span class="text-neutral-500 dark:text-neutral-400 text-base align-middle">(London)</span></h3>
+                      <p class="text-sm text-neutral-600 dark:text-neutral-400">May 2016 – Sept 2021</p>
+                    </div>
+                    <p class="text-sm uppercase tracking-[0.2em] text-neutral-500">Mid-weight Designer</p>
+                  </header>
+                  <p class="text-sm leading-relaxed text-neutral-700 dark:text-neutral-300 max-w-[95%]">
+                    My work focused on concept research and development, brand world creation, and packaging design systems for both projects and pitches. I was also involved in illustration, style guide development, and photography direction, contributing to the creation of cohesive brand identities.
+                  </p>
+                  <section class="space-y-2">
+                    <h4 class="text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Notable Projects</h4>
+                    <ul class="space-y-1 text-sm text-neutral-700 dark:text-neutral-300">
+                      <li>Purina One — concept and pack design, illustration style direction, rollout</li>
+                      <li>Starbucks soluble coffee — concept and pack design, illustration creation, rollout</li>
+                      <li>LifeStyle Zero — concept and pack design, rollout</li>
+                    </ul>
+                  </section>
+                </article>
+
+                <article class="space-y-5 border-t border-neutral-200/70 pt-6 dark:border-neutral-800">
+                  <header class="space-y-2">
+                    <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                      <h3 class="text-xl font-semibold">Freelance Designer</h3>
+                      <p class="text-sm text-neutral-600 dark:text-neutral-400">Jan 2013 – Apr 2016</p>
+                    </div>
+                    <p class="text-sm uppercase tracking-[0.2em] text-neutral-500">Designer</p>
+                  </header>
+                  <p class="text-sm leading-relaxed text-neutral-700 dark:text-neutral-300 max-w-[95%]">
+                    Concept research and development, communication and presentation design, social content, and packaging across varied clients, delivering strategic and visually compelling solutions.
+                  </p>
+                  <section class="space-y-2">
+                    <h4 class="text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Selected Clients</h4>
+                    <ul class="columns-2 gap-4 text-sm text-neutral-700 dark:text-neutral-300">
+                      <li>Brand Union</li>
+                      <li>Eight Partnership</li>
+                      <li>Imagination Communication</li>
+                      <li>Lane Crawford</li>
+                      <li>Ogilvy</li>
+                      <li>Philips Electronics</li>
+                      <li>Cathay Pacific</li>
+                      <li>Huawei</li>
+                    </ul>
+                  </section>
+                </article>
+
+                <div class="border-t border-neutral-200/70 pt-6 dark:border-neutral-800">
+                  <div class="grid gap-6 sm:grid-cols-2">
+                    <article class="space-y-2">
+                      <h3 class="text-lg font-semibold">Page One</h3>
+                      <p class="text-sm uppercase tracking-[0.2em] text-neutral-500">Junior Designer</p>
+                      <p class="text-sm text-neutral-600 dark:text-neutral-400">Jun 2011 – Jan 2013</p>
+                    </article>
+                    <article class="space-y-2">
+                      <h3 class="text-lg font-semibold">Entertainment One</h3>
+                      <p class="text-sm uppercase tracking-[0.2em] text-neutral-500">Design Intern</p>
+                      <p class="text-sm text-neutral-600 dark:text-neutral-400">Oct 2010 – Feb 2011</p>
+                    </article>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+          </div>
+
+          <aside class="space-y-8 border-t border-neutral-200/70 pt-6 text-sm text-neutral-700 dark:border-neutral-800 dark:text-neutral-300">
+            <section class="space-y-2">
+              <h2 class="text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Contact</h2>
+              <p>
+                <a href="tel:+447490692438" class="hover:underline">+44 7490 692438</a>
+              </p>
+              <p>
+                <a href="mailto:dicksonwong2@gmail.com" class="hover:underline">dicksonwong2@gmail.com</a>
+              </p>
+              <p>
+                <a href="https://dicksonwongdesign.com/stranger" class="underline underline-offset-4" rel="noopener" target="_blank">dicksonwongdesign.com/stranger</a>
+              </p>
+            </section>
+
+            <section class="space-y-2">
+              <h2 class="text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Education</h2>
+              <div>
+                <p class="font-medium text-neutral-900 dark:text-neutral-100">OCAD University (Toronto)</p>
+                <p>BA, Visual Communication — Graphic Design</p>
+                <p class="text-neutral-500 dark:text-neutral-400">2005 – 2010</p>
+              </div>
+              <div class="mt-3">
+                <p class="font-medium text-neutral-900 dark:text-neutral-100">Columbia International College</p>
+                <p class="text-neutral-500 dark:text-neutral-400">2003 – 2005</p>
+              </div>
+            </section>
+
+            <section class="space-y-1">
+              <h2 class="text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Language</h2>
+              <p>English</p>
+              <p>Chinese</p>
+            </section>
+
+            <section class="space-y-2">
+              <h2 class="text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Recognition</h2>
+              <p>PAC Awards 2025 — Best in Class (Sensodyne Clinical White)</p>
+            </section>
+            <section class="space-y-2">
+              <h2 class="text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Illustration</h2>
+              <a href="https://dixondixondixon.com" class="underline underline-offset-4 hover:no-underline break-all">dixondixondixon.com</a>
+            </section>
+
+            <section class="space-y-2">
+              <h2 class="text-xs font-semibold uppercase tracking-[0.3em] text-neutral-500">Fan Of</h2>
+              <ul class="space-y-1">
+                <li>Matisse</li>
+                <li>Singer Sargent</li>
+                <li>Chirico</li>
+                <li>Simone</li>
+                <li>James</li>
+                <li>Getz</li>
+              </ul>
+            </section>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-neutral-200/70 dark:border-neutral-800 py-8">
+      <div class="mx-auto max-w-6xl px-4 md:px-8 text-sm text-neutral-600 dark:text-neutral-400 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+        <p>&copy; <span data-current-year></span> Dickson Wong. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
 
   <script>
-    (function triggerHeaderFooterReveal() {
-      const heroImageSrc = '../assets/peteshead1.png';
-      const reveal = () => document.body.classList.add('page-ready');
-      const img = new Image();
-      img.addEventListener('load', reveal, { once: true });
-      img.addEventListener('error', reveal, { once: true });
-      img.src = heroImageSrc;
-      if (img.complete) {
-        reveal();
-      }
-    })();
+    (function () {
+      const doc = document.documentElement;
+      const storageKey = 'cv-theme';
+      const toggleButtons = () => Array.from(document.querySelectorAll('[data-theme-toggle]'));
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 
-    (function initProjectDots() {
-      const projectDots = document.querySelectorAll('.project-dot');
-      const projectSections = document.querySelectorAll('section[data-project]');
-      if (!projectDots.length || !projectSections.length) {
-        return;
-      }
-
-      const setActiveDot = (projectId) => {
-        projectDots.forEach((dot) => {
-          const isActive = dot.dataset.project === projectId;
-          dot.setAttribute('aria-current', isActive ? 'true' : 'false');
+      const applyTheme = (theme) => {
+        if (theme === 'dark') {
+          doc.classList.add('dark');
+        } else {
+          doc.classList.remove('dark');
+        }
+        toggleButtons().forEach((btn) => {
+          btn.textContent = theme === 'dark' ? 'Light' : 'Dark';
         });
       };
 
-      let currentProject = projectDots[0]?.dataset.project || null;
-      if (currentProject) {
-        setActiveDot(currentProject);
-      }
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const projectId = entry.target.dataset.project;
-            if (projectId && projectId !== currentProject) {
-              currentProject = projectId;
-              setActiveDot(projectId);
-            }
-          }
-        });
-      }, {
-        threshold: 0.5
-      });
-
-      projectSections.forEach((section) => observer.observe(section));
-    })();
-
-    (function enableBackgroundParallax() {
-      const sections = document.querySelectorAll('.parallax');
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (!sections.length || prefersReducedMotion) {
-        return;
-      }
-
-      let ticking = false;
-
-      const updatePositions = () => {
-        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-        sections.forEach((section) => {
-          const rect = section.getBoundingClientRect();
-          if (rect.bottom <= 0 || rect.top >= viewportHeight) {
-            section.style.setProperty('--parallax-offset', '0%');
-            return;
-          }
-
-          const totalDistance = viewportHeight + rect.height;
-          const progress = (viewportHeight - rect.top) / totalDistance;
-          const clamped = Math.min(1, Math.max(0, progress));
-          const offset = (clamped - 0.5) * 36; // subtle motion range
-          section.style.setProperty('--parallax-offset', `${offset}%`);
-        });
-        ticking = false;
-      };
-
-      const requestTick = () => {
-        if (!ticking) {
-          ticking = true;
-          window.requestAnimationFrame(updatePositions);
+      const getStoredTheme = () => {
+        try {
+          return localStorage.getItem(storageKey);
+        } catch (err) {
+          return null;
         }
       };
 
-      window.addEventListener('scroll', requestTick, { passive: true });
-      window.addEventListener('resize', requestTick);
+      const setStoredTheme = (theme) => {
+        try {
+          localStorage.setItem(storageKey, theme);
+        } catch (err) {
+          /* ignore storage failures */
+        }
+      };
 
-      updatePositions();
-    })();
+      const resolveInitialTheme = () => {
+        const stored = getStoredTheme();
+        if (stored === 'light' || stored === 'dark') {
+          return stored;
+        }
+        return 'light';
+      };
 
-    (function initProjectDrawer() {
-      const toggle = document.querySelector('.nav-toggle');
-      const drawer = document.getElementById('project-drawer');
-      const overlay = document.querySelector('.nav-overlay');
-      const navLinks = drawer?.querySelectorAll('[data-drawer-link]') || [];
-      if (!toggle || !drawer || !overlay) {
-        return;
-      }
+      const initTheme = () => {
+        applyTheme(resolveInitialTheme());
+        toggleButtons().forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const next = doc.classList.contains('dark') ? 'light' : 'dark';
+            applyTheme(next);
+            setStoredTheme(next);
+          });
+        });
+        prefersDark.addEventListener('change', (event) => {
+          if (!getStoredTheme()) {
+            applyTheme(event.matches ? 'dark' : 'light');
+          }
+        });
+      };
 
-      let isOpen = false;
-      let lastFocusedElement = null;
-      let overlayHideTimeout = null;
+      const setYear = () => {
+        const yearTarget = document.querySelector('[data-current-year]');
+        if (yearTarget) {
+          yearTarget.textContent = new Date().getFullYear();
+        }
+      };
 
-      navLinks.forEach((link) => link.setAttribute('tabindex', '-1'));
-
-      const setState = (open) => {
-        if (open === isOpen) {
+      const setJsonLdUrl = () => {
+        const ld = document.getElementById('cv-jsonld');
+        if (!ld) {
           return;
         }
-
-        isOpen = open;
-        toggle.setAttribute('aria-expanded', String(open));
-        toggle.setAttribute('aria-label', open ? 'Close project menu' : 'Open project menu');
-        drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
-
-        if (open) {
-          if (overlayHideTimeout) {
-            window.clearTimeout(overlayHideTimeout);
-            overlayHideTimeout = null;
+        try {
+          const data = JSON.parse(ld.textContent || '{}');
+          if (!data.url) {
+            data.url = window.location.href;
+            ld.textContent = JSON.stringify(data);
           }
-          overlay.removeAttribute('hidden');
-          document.body.classList.add('nav-open');
-          navLinks.forEach((link) => link.removeAttribute('tabindex'));
-          lastFocusedElement = document.activeElement;
-          window.setTimeout(() => navLinks[navLinks.length - 1]?.focus(), 0);
-        } else {
-          document.body.classList.remove('nav-open');
-          navLinks.forEach((link) => link.setAttribute('tabindex', '-1'));
-          overlayHideTimeout = window.setTimeout(() => {
-            overlay.setAttribute('hidden', '');
-            overlayHideTimeout = null;
-          }, 300);
-          if (lastFocusedElement instanceof HTMLElement) {
-            lastFocusedElement.focus();
-          } else {
-            toggle.focus();
-          }
+        } catch (err) {
+          /* ignore JSON issues */
         }
       };
 
-      const closeDrawer = () => setState(false);
-
-      toggle.addEventListener('click', () => setState(!isOpen));
-      overlay.addEventListener('click', closeDrawer);
-      navLinks.forEach((link) => link.addEventListener('click', closeDrawer));
-
-      document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && isOpen) {
-          event.preventDefault();
-          closeDrawer();
-        }
+      document.addEventListener('DOMContentLoaded', () => {
+        initTheme();
+        setYear();
+        setJsonLdUrl();
       });
     })();
+  </script>
 
+  <script id="cv-jsonld" type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Dickson Wong",
+      "jobTitle": "Design Director / Brand & Packaging Designer",
+      "address": {
+        "addressLocality": "London",
+        "addressCountry": "UK"
+      },
+      "url": "",
+      "sameAs": [
+        "https://fusemcr.com/dickson-wong",
+        "https://dixondixondixon.com"
+      ]
+    }
   </script>
 </body>
 </html>
