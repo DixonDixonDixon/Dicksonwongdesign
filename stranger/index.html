@@ -6,7 +6,10 @@
   <title>Dickson · Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=SUSE:wght@600&display=swap" rel="stylesheet">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=SUSE:wght@600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=SUSE:wght@600&display=swap" rel="stylesheet">
+  </noscript>
   <style>
     :root {
       --header-height: 108px;
@@ -27,6 +30,11 @@
       font-family: 'SUSE', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       font-weight: 600;
       color: #000000;
+      scrollbar-width: none;
+    }
+
+    body::-webkit-scrollbar {
+      display: none;
     }
 
     header,
@@ -42,7 +50,6 @@
       color: var(--text-dark);
       box-shadow: 0 18px 35px rgba(15, 23, 42, 0.14);
       transition: transform 3s ease;
-      will-change: transform;
     }
 
     header {
@@ -55,10 +62,12 @@
     footer {
       bottom: 0;
       height: var(--footer-height);
-      justify-content: center;
+      justify-content: space-between;
+      align-items: center;
       font-size: 0.9rem;
       color: var(--text-muted);
       transform: translateY(120%);
+      gap: 1.5rem;
     }
 
     body.page-ready header,
@@ -110,22 +119,209 @@
       opacity: 0.75;
     }
 
-    nav {
-      display: flex;
-      gap: 1.5rem;
-      font-size: 0.9rem;
+    .nav-toggle {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       margin-left: auto;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      transition: opacity 0.6s ease 3s, transform 0.25s ease;
     }
 
-    nav a {
+    .nav-toggle:hover,
+    .nav-toggle:focus-visible {
+      outline: none;
+      transform: scale(1.05);
+    }
+
+    .nav-toggle-lines,
+    .nav-toggle-lines::before,
+    .nav-toggle-lines::after {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #000000;
+      border-radius: 999px;
+      transition: transform 0.35s ease, opacity 0.35s ease, background 0.35s ease;
+    }
+
+    .nav-toggle-lines {
+      position: relative;
+    }
+
+    .nav-toggle-lines::before,
+    .nav-toggle-lines::after {
+      content: '';
+      position: absolute;
+      left: 0;
+    }
+
+    .nav-toggle-lines::before {
+      top: -6px;
+    }
+
+    .nav-toggle-lines::after {
+      top: 6px;
+    }
+
+    body.nav-open .nav-toggle-lines {
+      background: transparent;
+    }
+
+    body.nav-open .nav-toggle-lines::before {
+      transform: translateY(6px) rotate(45deg);
+    }
+
+    body.nav-open .nav-toggle-lines::after {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+
+    .nav-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 12;
+    }
+
+    body.nav-open .nav-overlay {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .project-drawer {
+      position: fixed;
+      top: calc(var(--header-height) + 1.5rem);
+      right: 1.75rem;
+      width: clamp(240px, 28vw, 320px);
+      max-height: calc(100vh - var(--header-height) - 3rem);
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding: 1.75rem 1.65rem;
+      border-radius: 18px;
+      background: rgba(14, 14, 18, 0.96);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 32px 48px rgba(0, 0, 0, 0.32);
+      transform: translateY(-8px) scale(0.98);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.4s cubic-bezier(0.25, 0.85, 0.35, 1), opacity 0.28s ease;
+      z-index: 22;
+    }
+
+    body.nav-open .project-drawer {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .drawer-nav {
+      display: grid;
+      gap: 1.35rem;
+      text-align: right;
+    }
+
+    .drawer-nav a {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-size: 1.275rem;
+      transition: color 0.2s ease;
+    }
+
+    .drawer-nav a:hover,
+    .drawer-nav a:focus-visible {
+      color: #ffffff;
+      outline: none;
+    }
+
+    .project-dots {
+      position: fixed;
+      top: 50%;
+      right: 2.5rem;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      z-index: 10;
+    }
+
+    .project-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.65);
+      background: transparent;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+    }
+
+    .project-dot::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      transition: opacity 0.3s ease;
+    }
+
+    .project-dot[aria-current="true"],
+    .project-dot:focus-visible {
+      transform: scale(1.25);
+      border-color: #ffffff;
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .project-dot[aria-current="true"]::after {
+      opacity: 1;
+      background: #ffffff;
+    }
+
+    .project-dot:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35);
+    }
+
+    .footer-copy {
+      color: #000000;
+      transition: opacity 0.6s ease 3s;
+    }
+
+    .footer-email {
+      margin-left: auto;
       color: #000000;
       text-decoration: none;
-      transition: color 0.25s ease;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      transition: opacity 0.6s ease 3s, color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      opacity: 0;
     }
 
-    nav a:hover,
-    nav a:focus {
-      color: #000000;
+    .footer-email:hover,
+    .footer-email:focus-visible {
+      color: #ffffff;
+      background: #000000;
+      border-color: #000000;
+      outline: none;
+    }
+
+    body.page-ready .footer-email {
+      opacity: 1;
     }
 
     main {
@@ -139,28 +335,87 @@
     }
 
     .parallax {
-      background-attachment: fixed;
-      background-position: center;
-      background-repeat: no-repeat;
+      position: relative;
+      overflow: hidden;
+      background: #000;
       background-size: cover;
-      width: 100%;
+      background-repeat: no-repeat;
+      background-position: center calc(50% + var(--parallax-offset, 0%));
     }
 
-    .hero {
+    .peteshead-1 {
+      background-image: url('../assets/peteshead1.png');
+    }
+
+    .peteshead-2 {
+      background-image: url('../assets/peteshead2.png');
+    }
+
+    .peteshead-3 {
+      background-image: url('../assets/peteshead3.png');
+    }
+
+    .peteshead-4 {
+      background-image: url('../assets/peteshead4.png');
+    }
+
+    .tres-1 {
       background-image: url('../assets/Tres1.png');
     }
 
-    .project {
+    .tres-2 {
       background-image: url('../assets/Tres2.png');
     }
 
-    .contact {
+    .tres-3 {
       background-image: url('../assets/Tres3.png');
     }
 
+    .tres-4 {
+      background-image: url('../assets/Tres4.png');
+    }
+
+    .tres-5 {
+      background-image: url('../assets/Tres5.png');
+    }
+
+    .opalina-1 {
+      background-image: url('../assets/opalina1.png');
+    }
+
+    .opalina-2 {
+      background-image: url('../assets/opalina2.png');
+    }
+
+    .opalina-3 {
+      background-image: url('../assets/opalina3.png');
+    }
+
+    .opalina-4 {
+      background-image: url('../assets/opalina4.png');
+    }
+
     @media (max-width: 768px) {
-      .parallax {
-        background-attachment: scroll;
+      .nav-toggle {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+      }
+
+      .project-drawer {
+        right: 50%;
+        transform: translate(50%, -8px) scale(0.98);
+        width: min(92vw, 360px);
+        top: calc(var(--header-height) + 1rem);
+        max-height: calc(100vh - var(--header-height) - 2rem);
+      }
+
+      body.nav-open .project-drawer {
+        transform: translate(50%, 0) scale(1);
+      }
+
+      .project-dots {
+        display: none;
       }
 
       .brand-logo {
@@ -173,7 +428,13 @@
         text-align: left;
         align-items: flex-start;
         margin-right: auto;
+        font-size: 1.1rem;
       }
+
+      .brand-sub {
+        font-size: 0.62rem;
+      }
+
     }
   </style>
 </head>
@@ -181,25 +442,46 @@
   <header>
     <img src="../assets/Dwd2.svg" class="brand-logo" alt="DWD logo">
     <span class="brand-copy"><span class="brand-line">Dickson Wong Design</span><span class="brand-sub">for Stranger and Stranger</span></span>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="project-drawer" aria-label="Open project menu">
+      <span class="nav-toggle-lines" aria-hidden="true"></span>
+    </button>
   </header>
+  <div class="nav-overlay" hidden></div>
+  <aside class="project-drawer" id="project-drawer" aria-hidden="true">
+    <nav class="drawer-nav">
+      <a href="#peteshead" data-drawer-link="peteshead">Peteshead</a>
+      <a href="#tres" data-drawer-link="tres">Tres</a>
+      <a href="#opalina" data-drawer-link="opalina">Opalina</a>
+    </nav>
+  </aside>
+  <aside class="project-dots" aria-label="Project navigation">
+    <a class="project-dot" href="#peteshead" data-project="peteshead" aria-label="View Peteshead project" aria-current="true"></a>
+    <a class="project-dot" href="#tres" data-project="tres" aria-label="View Tres project"></a>
+    <a class="project-dot" href="#opalina" data-project="opalina" aria-label="View Opalina project"></a>
+  </aside>
   <main>
-    <section class="hero parallax" id="about"></section>
-    <section class="project parallax"></section>
-    <section class="contact parallax" id="contact"></section>
+    <section class="parallax peteshead-1" id="peteshead" data-project="peteshead"></section>
+    <section class="parallax peteshead-2" data-project="peteshead"></section>
+    <section class="parallax peteshead-3" data-project="peteshead"></section>
+    <section class="parallax peteshead-4" data-project="peteshead"></section>
+    <section class="parallax tres-1" id="tres" data-project="tres"></section>
+    <section class="parallax tres-2" data-project="tres"></section>
+    <section class="parallax tres-3" data-project="tres"></section>
+    <section class="parallax tres-4" data-project="tres"></section>
+    <section class="parallax tres-5" data-project="tres"></section>
+    <section class="parallax opalina-1" id="opalina" data-project="opalina"></section>
+    <section class="parallax opalina-2" data-project="opalina"></section>
+    <section class="parallax opalina-3" data-project="opalina"></section>
+    <section class="parallax opalina-4" data-project="opalina"></section>
   </main>
   <footer>
-    <span class="footer-copy">© <span id="year"></span> Dickson</span>
+    <span class="footer-copy">© 2005 Dickson Wong Design. All rights reserved.</span>
+    <a class="footer-email" href="mailto:hello@dicksonwongdesign.com">Email me</a>
   </footer>
 
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-
     (function triggerHeaderFooterReveal() {
-      const heroImageSrc = '../assets/Tres1.png';
+      const heroImageSrc = '../assets/peteshead1.png';
       const reveal = () => document.body.classList.add('page-ready');
       const img = new Image();
       img.addEventListener('load', reveal, { once: true });
@@ -210,7 +492,146 @@
       }
     })();
 
-    
+    (function initProjectDots() {
+      const projectDots = document.querySelectorAll('.project-dot');
+      const projectSections = document.querySelectorAll('section[data-project]');
+      if (!projectDots.length || !projectSections.length) {
+        return;
+      }
+
+      const setActiveDot = (projectId) => {
+        projectDots.forEach((dot) => {
+          const isActive = dot.dataset.project === projectId;
+          dot.setAttribute('aria-current', isActive ? 'true' : 'false');
+        });
+      };
+
+      let currentProject = projectDots[0]?.dataset.project || null;
+      if (currentProject) {
+        setActiveDot(currentProject);
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const projectId = entry.target.dataset.project;
+            if (projectId && projectId !== currentProject) {
+              currentProject = projectId;
+              setActiveDot(projectId);
+            }
+          }
+        });
+      }, {
+        threshold: 0.5
+      });
+
+      projectSections.forEach((section) => observer.observe(section));
+    })();
+
+    (function enableBackgroundParallax() {
+      const sections = document.querySelectorAll('.parallax');
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!sections.length || prefersReducedMotion) {
+        return;
+      }
+
+      let ticking = false;
+
+      const updatePositions = () => {
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+        sections.forEach((section) => {
+          const rect = section.getBoundingClientRect();
+          if (rect.bottom <= 0 || rect.top >= viewportHeight) {
+            section.style.setProperty('--parallax-offset', '0%');
+            return;
+          }
+
+          const totalDistance = viewportHeight + rect.height;
+          const progress = (viewportHeight - rect.top) / totalDistance;
+          const clamped = Math.min(1, Math.max(0, progress));
+          const offset = (clamped - 0.5) * 36; // subtle motion range
+          section.style.setProperty('--parallax-offset', `${offset}%`);
+        });
+        ticking = false;
+      };
+
+      const requestTick = () => {
+        if (!ticking) {
+          ticking = true;
+          window.requestAnimationFrame(updatePositions);
+        }
+      };
+
+      window.addEventListener('scroll', requestTick, { passive: true });
+      window.addEventListener('resize', requestTick);
+
+      updatePositions();
+    })();
+
+    (function initProjectDrawer() {
+      const toggle = document.querySelector('.nav-toggle');
+      const drawer = document.getElementById('project-drawer');
+      const overlay = document.querySelector('.nav-overlay');
+      const navLinks = drawer?.querySelectorAll('[data-drawer-link]') || [];
+      if (!toggle || !drawer || !overlay) {
+        return;
+      }
+
+      let isOpen = false;
+      let lastFocusedElement = null;
+      let overlayHideTimeout = null;
+
+      navLinks.forEach((link) => link.setAttribute('tabindex', '-1'));
+
+      const setState = (open) => {
+        if (open === isOpen) {
+          return;
+        }
+
+        isOpen = open;
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Close project menu' : 'Open project menu');
+        drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+
+        if (open) {
+          if (overlayHideTimeout) {
+            window.clearTimeout(overlayHideTimeout);
+            overlayHideTimeout = null;
+          }
+          overlay.removeAttribute('hidden');
+          document.body.classList.add('nav-open');
+          navLinks.forEach((link) => link.removeAttribute('tabindex'));
+          lastFocusedElement = document.activeElement;
+          window.setTimeout(() => navLinks[navLinks.length - 1]?.focus(), 0);
+        } else {
+          document.body.classList.remove('nav-open');
+          navLinks.forEach((link) => link.setAttribute('tabindex', '-1'));
+          overlayHideTimeout = window.setTimeout(() => {
+            overlay.setAttribute('hidden', '');
+            overlayHideTimeout = null;
+          }, 300);
+          if (lastFocusedElement instanceof HTMLElement) {
+            lastFocusedElement.focus();
+          } else {
+            toggle.focus();
+          }
+        }
+      };
+
+      const closeDrawer = () => setState(false);
+
+      toggle.addEventListener('click', () => setState(!isOpen));
+      overlay.addEventListener('click', closeDrawer);
+      navLinks.forEach((link) => link.addEventListener('click', closeDrawer));
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && isOpen) {
+          event.preventDefault();
+          closeDrawer();
+        }
+      });
+    })();
+
   </script>
 </body>
 </html>
