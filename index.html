@@ -6,7 +6,10 @@
   <title>Under Development</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text&display=swap" rel="stylesheet">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=SUSE:wght@500&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=SUSE:wght@500&display=swap" rel="stylesheet">
+  </noscript>
   <style>
     * {
       box-sizing: border-box;
@@ -14,7 +17,8 @@
 
     body {
       margin: 0;
-      font-family: 'DM Serif Text', Georgia, serif;
+      font-family: 'SUSE', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 500;
       color: #222222;
       background: radial-gradient(120% 160% at 15% 15%, #ffd0f9 0%, #ffe7e3 32%, #f0f5ff 70%, #f9fff8 100%);
       position: relative;
@@ -101,12 +105,216 @@
       font-size: clamp(1rem, 2.5vw, 1.25rem);
       line-height: 1.6;
     }
+
+    .email-clipboard {
+      margin-top: 1.5rem;
+      padding: 0.38rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.5);
+      color: #1f1f1f;
+      font-family: inherit;
+      font-size: clamp(0.82rem, 1.8vw, 0.92rem);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: none;
+      opacity: 1;
+    }
+
+    .email-clipboard:hover,
+    .email-clipboard:focus-visible {
+      background: rgba(255, 255, 255, 0.65);
+      color: #111111;
+      border-color: rgba(255, 255, 255, 0.9);
+      outline: none;
+      transform: translateY(-1px);
+      box-shadow: none;
+    }
+
+    .email-clipboard:active {
+      transform: translateY(0);
+    }
+
+    .email-clipboard.success::after {
+      content: 'copied!';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      background: rgba(34, 34, 34, 0.92);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: inherit;
+      animation: fadeNotice 1.4s ease forwards;
+    }
+
+    @keyframes fadeNotice {
+      0% {
+        opacity: 0;
+      }
+      15% {
+        opacity: 1;
+      }
+      70% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
   <main>
-    <img src="assets/Dwd.svg" alt="DWD logo">
+    <img class="logo-physics" src="assets/Dwd.svg" alt="DWD logo">
     <p>This page is under development.<br>Please check back later.</p>
+    <button class="email-clipboard" type="button">Email me</button>
   </main>
+  <script>
+    (function enableLogoPhysics() {
+      const logo = document.querySelector('.logo-physics');
+      if (!logo) {
+        return;
+      }
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) {
+        return;
+      }
+
+      let animationFrameId = null;
+
+      const triggerFall = () => {
+        if (animationFrameId) {
+          return;
+        }
+
+        const rect = logo.getBoundingClientRect();
+        const computedStyle = window.getComputedStyle(logo);
+
+        if (!logo.dataset.placeholderCreated) {
+          const placeholder = document.createElement('div');
+          placeholder.className = 'logo-placeholder';
+          placeholder.style.width = `${rect.width}px`;
+          placeholder.style.height = `${rect.height}px`;
+          placeholder.style.margin = computedStyle.margin;
+          placeholder.style.visibility = 'hidden';
+          placeholder.style.pointerEvents = 'none';
+          placeholder.style.flexShrink = '0';
+          logo.parentElement.insertBefore(placeholder, logo);
+          logo.dataset.placeholderCreated = 'true';
+        }
+
+        logo.style.position = 'fixed';
+        logo.style.left = `${rect.left}px`;
+        logo.style.top = `${rect.top}px`;
+        logo.style.width = computedStyle.width;
+        logo.style.height = computedStyle.height;
+        logo.style.margin = '0';
+        logo.style.transform = 'rotate(0deg)';
+        logo.style.willChange = 'transform, top, left';
+        logo.style.pointerEvents = 'none';
+
+        const state = {
+          x: rect.left,
+          y: rect.top,
+          vx: 6,
+          vy: -5,
+          angle: 0,
+          angularVelocity: 3,
+          width: rect.width,
+          height: rect.height
+        };
+
+        const gravity = 0.65;
+        const bounceDecay = 0.64;
+
+        const floor = () => window.innerHeight - state.height - 24;
+        const rightWall = () => window.innerWidth - state.width - 16;
+
+        const animate = () => {
+          state.vy += gravity;
+          state.x += state.vx;
+          state.y += state.vy;
+          state.angle += state.angularVelocity;
+
+          const currentFloor = floor();
+          const currentRightWall = rightWall();
+
+          if (state.y >= currentFloor) {
+            state.y = currentFloor;
+            state.vy *= -bounceDecay;
+            state.angularVelocity *= bounceDecay;
+            state.vx *= 0.82;
+
+            if (Math.abs(state.vy) < 1.2) {
+              state.vy = 0;
+            }
+            if (Math.abs(state.vx) < 0.35) {
+              state.vx = 0;
+            }
+          }
+
+          if (state.x <= 8) {
+            state.x = 8;
+            state.vx *= -bounceDecay;
+          } else if (state.x >= currentRightWall) {
+            state.x = currentRightWall;
+            state.vx *= -bounceDecay;
+          }
+
+          logo.style.left = `${state.x}px`;
+          logo.style.top = `${state.y}px`;
+          logo.style.transform = `rotate(${state.angle}deg)`;
+
+          if (
+            state.vx === 0 &&
+            state.vy === 0 &&
+            state.y >= currentFloor
+          ) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+            logo.style.willChange = 'auto';
+            return;
+          }
+
+          animationFrameId = requestAnimationFrame(animate);
+        };
+
+        animationFrameId = requestAnimationFrame(animate);
+      };
+
+      logo.addEventListener('pointerenter', triggerFall, { once: true });
+    })();
+
+    (function enableClipboardButton() {
+      const button = document.querySelector('.email-clipboard');
+      if (!button || !navigator.clipboard) {
+        return;
+      }
+
+      const email = 'hello@dicksonwongdesign.com';
+
+      const resetState = () => {
+        button.classList.remove('success');
+      };
+
+      button.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(email);
+          button.classList.add('success');
+          setTimeout(resetState, 1600);
+        } catch (error) {
+          console.error('Clipboard copy failed', error);
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
